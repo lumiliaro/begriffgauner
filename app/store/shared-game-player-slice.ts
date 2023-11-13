@@ -28,7 +28,10 @@ export const createSharedGamePlayersSlice: StateCreator<
     setRandomImposter: () => {
         const randomIndex = Math.floor(Math.random() * get().playerCount);
         const imposter = get().players[randomIndex];
-        imposter["imposter"] = true;
-        get().setPlayer(randomIndex, imposter);
+
+        if (imposter) {
+            imposter["imposter"] = true;
+            get().setPlayer(randomIndex, imposter);
+        }
     },
 });

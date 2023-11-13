@@ -4,7 +4,7 @@ import { title } from "@/components/primitives";
 import { Button } from "@nextui-org/button";
 import { useBoundStore } from "../store/store";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useCallback, useMemo, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { Input } from "@nextui-org/input";
 
 export default function PlayerInputPage() {
@@ -13,6 +13,12 @@ export default function PlayerInputPage() {
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const players = useBoundStore((state) => state.players);
+
+    useEffect(() => {
+        if (playerCount < 3) {
+            router.push("/play");
+        }
+    }, [playerCount, router]);
 
     const handlePlayerChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
@@ -33,10 +39,6 @@ export default function PlayerInputPage() {
         },
         [setPlayer]
     );
-
-    if (playerCount < 3) {
-        router.push("play");
-    }
 
     const playerInputs = useMemo(() => {
         let inputs: React.ReactElement[] = [];
@@ -61,6 +63,10 @@ export default function PlayerInputPage() {
 
         return inputs;
     }, [playerCount, handlePlayerChange, players]);
+
+    if (playerCount < 3) {
+        return <></>;
+    }
 
     return (
         <div className="flex w-full max-w-xl flex-col gap-4">

@@ -1,0 +1,31 @@
+# Add 'repo' label to any root file changes
+repo:
+    - "*"
+
+# Add 'app' label to any change to app tsx files
+app:
+    - apps/**/*.tsx
+
+# Add 'util' label to any change to util ts files
+util:
+    - apps/utils/**/*.ts
+
+# Add 'component' label to any change to component tsx files
+component:
+    - components/**/*.tsx
+
+# Add 'style' label to any change to style css files
+style:
+    - styles/**/*.css
+
+# Add 'type' label to any change to type ts files
+type:
+    - types/**/*.ts
+
+# Add 'config' label to any change to config ts files
+config:
+    - config/**/*.ts
+
+# Add 'public' label to any change to public files
+public:
+    - public/**/*

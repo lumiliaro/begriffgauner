@@ -28,6 +28,12 @@ export default function GamePage() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     useEffect(() => {
+        if (!players[currentPlayerIndex]) {
+            router.push("/play");
+        }
+    }, [players, router, currentPlayerIndex]);
+
+    useEffect(() => {
         // Initial Loading
         shufflePlayers();
         resetImposter();
@@ -46,10 +52,15 @@ export default function GamePage() {
         } else router.push("round-end");
     }, [currentPlayerIndex, playerCount, setNextPlayersTurn, router]);
 
+    if (!players[currentPlayerIndex]) {
+        return <></>;
+    }
+
     return (
         <div className="flex w-full max-w-lg flex-col gap-4">
             <h1 className={title()}>
-                It is player {players[currentPlayerIndex].name}&apos;s turn
+                It is player {players[currentPlayerIndex].name ?? ""}
+                &apos;s turn
             </h1>
             <Button color="primary" onPress={onOpen} isLoading={loading}>
                 View word

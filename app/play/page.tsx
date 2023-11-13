@@ -11,7 +11,6 @@ import { PlayForm, playFormSchema } from "../utils/schemas";
 import { SafeParseError } from "zod";
 
 export default function PlayPage() {
-    const words = useBoundStore((state) => state.words);
     const playerCount = useBoundStore((state) => state.playerCount);
     const selectedWordList = useBoundStore((state) => state.selectedWordList);
     const router = useRouter();

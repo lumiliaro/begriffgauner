@@ -25,7 +25,12 @@ export default function GamePage() {
     const resetImposter = useBoundStore((state) => state.resetImposter);
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [wordViewed, setWordViewed] = useState<boolean>(false);
+
+    const { isOpen, onOpen, onOpenChange } = useDisclosure({
+        defaultOpen: false,
+        onOpen: () => setWordViewed(true),
+    });
 
     useEffect(() => {
         if (!players[currentPlayerIndex]) {
@@ -48,6 +53,7 @@ export default function GamePage() {
 
     const handleNextPlayerTurnClick = useCallback(() => {
         if (currentPlayerIndex !== playerCount - 1) {
+            setWordViewed(false);
             setNextPlayersTurn();
         } else router.push("round-end");
     }, [currentPlayerIndex, playerCount, setNextPlayersTurn, router]);
@@ -74,6 +80,7 @@ export default function GamePage() {
                 color="danger"
                 onPress={handleNextPlayerTurnClick}
                 isLoading={loading}
+                isDisabled={!wordViewed}
             >
                 Next player
             </Button>

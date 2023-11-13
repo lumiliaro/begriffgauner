@@ -22,7 +22,11 @@ export default function ModalShowWord({
     onOpenChange,
 }: ModalShowWordProps): ReactElement {
     return (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <Modal
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            isDismissable={false}
+        >
             <ModalContent>
                 {(onClose) => (
                     <>

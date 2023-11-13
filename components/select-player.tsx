@@ -2,7 +2,7 @@
 
 import { useBoundStore } from "@/app/store/store";
 import { Select, SelectItem } from "@nextui-org/select";
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 
 export type PlayerCountType = {
     label: string;

@@ -5,9 +5,8 @@ import { Button } from "@nextui-org/button";
 import { useBoundStore } from "../store/store";
 import { useCallback, useEffect, useState } from "react";
 import { Chip } from "@nextui-org/chip";
-import { Router } from "next/router";
 import { useRouter } from "next/navigation";
-import { Modal, ModalBody, useDisclosure } from "@nextui-org/modal";
+import { useDisclosure } from "@nextui-org/modal";
 import ModalShowWord from "@/components/modal-show-word";
 
 export default function GamePage() {

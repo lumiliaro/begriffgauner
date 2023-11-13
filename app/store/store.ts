@@ -1,4 +1,4 @@
-import { create, StateCreator } from "zustand";
+import { create } from "zustand";
 import { GameSlice, createGameSlice } from "./game-slice";
 import { WordsSlice, createWordsSlice } from "./words-slice";
 import { PlayersSlice, createPlayersSlice } from "./players-slice";

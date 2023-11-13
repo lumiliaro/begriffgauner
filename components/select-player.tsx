@@ -20,7 +20,9 @@ const playerCountOptions: PlayerCountType[] = [
     { label: "Ten", value: 10 },
 ];
 
-export default function SelectPlayer(): ReactElement {
+export default function SelectPlayer(props: {
+    errorMessage?: string[];
+}): ReactElement {
     const playerCount = useBoundStore((state) => state.playerCount);
     const setPlayerCount = useBoundStore((state) => state.setPlayerCount);
 
@@ -41,7 +43,9 @@ export default function SelectPlayer(): ReactElement {
             selectionMode="single"
             className="max-w-lg"
             selectedKeys={[playerCount.toString()]}
+            name="playerCount"
             onChange={handleSelectionChange}
+            errorMessage={props.errorMessage}
         >
             {playerCountOptions.map((item: PlayerCountType) => {
                 return (

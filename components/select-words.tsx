@@ -5,7 +5,9 @@ import { wordLists } from "@/app/utils/wordlists";
 import { Select, SelectItem } from "@nextui-org/select";
 import { ReactElement } from "react";
 
-export default function SelectWords(): ReactElement {
+export default function SelectWords(props: {
+    errorMessage?: string[];
+}): ReactElement {
     const setWords = useBoundStore((state) => state.setWords);
     const setSelectedWordList = useBoundStore(
         (state) => state.setSelectedWordList
@@ -29,11 +31,13 @@ export default function SelectWords(): ReactElement {
         <Select
             size="lg"
             label="Words"
+            name="wordList"
             selectionMode="single"
             className="max-w-lg"
             disabledKeys={[""]}
             selectedKeys={[selectedWordList.value]}
             onChange={handleSelectionChange}
+            errorMessage={props.errorMessage}
         >
             {wordLists.map((wordList) => {
                 return (

@@ -10,6 +10,7 @@
         "test": "echo \"no test specified\""
     },
     "dependencies": {
+        "@hookform/resolvers": "^3.3.2",
         "@nextui-org/button": "2.0.26",
         "@nextui-org/card": "^2.0.24",
         "@nextui-org/chip": "^2.0.25",
@@ -40,6 +41,7 @@
         "postcss": "8.4.31",
         "react": "18.2.0",
         "react-dom": "18.2.0",
+        "react-hook-form": "^7.48.2",
         "simple-zustand-devtools": "^1.1.0",
         "tailwind-variants": "^0.1.18",
         "tailwindcss": "3.3.5",

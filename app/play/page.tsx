@@ -2,57 +2,51 @@
 
 import { title } from "@/components/primitives";
 import SelectPlayer from "@/components/select-player";
-import SelectWords from "@/components/select-words";
 import { Button } from "@nextui-org/button";
 import { useBoundStore } from "../store/store";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { PlayForm, playFormSchema } from "../utils/schemas";
-import { SafeParseError } from "zod";
+import { PlaySchema } from "../utils/schemas";
+import { Form, Formik } from "formik";
+import SelectWords from "@/components/select-words";
 
 export default function PlayPage() {
-    const playerCount = useBoundStore((state) => state.playerCount);
-    const selectedWordList = useBoundStore((state) => state.selectedWordList);
+    const numberOfPlayers = useBoundStore((state) => state.numberOfPlayers);
+    const setNumberOfPlayers = useBoundStore(
+        (state) => state.setNumberOfPlayers
+    );
+    const setWordList = useBoundStore((state) => state.setWordList);
+    const wordList = useBoundStore((state) => state.wordList);
     const router = useRouter();
-    const [loading, setLoading] = useState<boolean>(false);
-    const [errors, setErrors] = useState<SafeParseError<PlayForm>>();
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        setLoading(true);
-        event.preventDefault();
-
-        try {
-            const validatedData = playFormSchema.safeParse({
-                playerCount: playerCount,
-                wordList: selectedWordList,
-            });
-
-            if (!validatedData.success) {
-                setLoading(false);
-                setErrors(validatedData);
-                return;
-            }
-
-            router.push("player-input");
-        } catch (error: any) {
-            console.error(error.message);
-        }
-    };
     return (
-        <form
-            className="flex w-full max-w-xs flex-col gap-4"
-            onSubmit={handleSubmit}
+        <Formik
+            initialValues={{
+                numberOfPlayers: numberOfPlayers.toString(),
+                wordList: wordList,
+            }}
+            validationSchema={PlaySchema}
+            onSubmit={(values, helpers) => {
+                // same shape as initial values
+                setNumberOfPlayers(values.numberOfPlayers);
+                setWordList(values.wordList);
+                helpers.setSubmitting(false);
+                router.push("player-input");
+            }}
         >
-            <h1 className={title()}>Game Settings</h1>
-            <SelectPlayer
-                errorMessage={errors?.error?.format().playerCount?._errors}
-            />
-            <SelectWords
-                errorMessage={errors?.error?.format().wordList?._errors}
-            />
-            <Button type="submit" color="success" isLoading={loading}>
-                Play
-            </Button>
-        </form>
+            {(formik) => (
+                <Form className="flex w-full max-w-xs flex-col gap-4">
+                    <h1 className={title()}>Game Settings</h1>
+                    <SelectPlayer name="numberOfPlayers" />
+                    <SelectWords name="wordList" />
+                    <Button
+                        type="submit"
+                        color="success"
+                        isLoading={formik.isSubmitting}
+                    >
+                        Play
+                    </Button>
+                </Form>
+            )}
+        </Formik>
     );
 }

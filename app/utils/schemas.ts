@@ -1,31 +1,16 @@
-import { number, z } from "zod";
+import * as Yup from "yup";
 
-export const playFormSchema = z.object({
-    playerCount: number({
-        required_error: "Number of players is required",
-        invalid_type_error: "Number of players must be a number",
-    })
-        .min(3)
-        .max(10)
-        .int(),
-    wordList: z
-        .object({
-            label: z.string(),
-            value: z.string(),
-            words: z.array(z.string()),
-        })
-        .superRefine((wordList, context) => {
-            if (
-                wordList.label === "" ||
-                wordList.value === "" ||
-                wordList.words.length === 0
-            ) {
-                context.addIssue({
-                    code: z.ZodIssueCode.custom,
-                    message: "Words are required",
-                });
-            }
-        }),
+export const PlaySchema = Yup.object().shape({
+    numberOfPlayers: Yup.string()
+        .required("Number of players is required")
+        .matches(/^[0-9]|10$/, "Must be a number"),
+    wordList: Yup.string().required("Word list is required"),
 });
 
-export type PlayForm = z.infer<typeof playFormSchema>;
+export type PlayFormType = Yup.InferType<typeof PlaySchema>;
+
+export const PlayerInputSchema = Yup.object().shape({
+    players: Yup.array(Yup.string().required()).required(),
+});
+
+export type PlayerInputFormType = Yup.InferType<typeof PlayerInputSchema>;

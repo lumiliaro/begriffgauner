@@ -1,7 +1,7 @@
 "use client";
 
-import { useBoundStore } from "@/app/store/store";
 import { Select, SelectItem } from "@nextui-org/select";
+import { FieldHookConfig, useField } from "formik";
 import { ReactElement } from "react";
 
 export type PlayerCountType = {
@@ -20,32 +20,21 @@ const playerCountOptions: PlayerCountType[] = [
     { label: "Ten", value: 10 },
 ];
 
-export default function SelectPlayer(props: {
-    errorMessage?: string[];
-}): ReactElement {
-    const playerCount = useBoundStore((state) => state.playerCount);
-    const setPlayerCount = useBoundStore((state) => state.setPlayerCount);
-
-    const handleSelectionChange = (
-        event: React.ChangeEvent<HTMLSelectElement>
-    ) => {
-        const value = Number(event.target.value);
-
-        if (!isNaN(value)) {
-            setPlayerCount(value);
-        }
-    };
+export default function SelectPlayer(
+    props: FieldHookConfig<string>
+): ReactElement {
+    const [field, meta] = useField(props);
 
     return (
         <Select
+            {...field}
             size="lg"
             label="Number of players"
             selectionMode="single"
             className="max-w-lg"
-            selectedKeys={[playerCount.toString()]}
-            name="playerCount"
-            onChange={handleSelectionChange}
-            errorMessage={props.errorMessage}
+            selectedKeys={[meta.value]}
+            isInvalid={meta.touched && meta.error ? true : false}
+            errorMessage={meta.touched && meta.error ? meta.error : undefined}
         >
             {playerCountOptions.map((item: PlayerCountType) => {
                 return (

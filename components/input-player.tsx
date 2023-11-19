@@ -16,6 +16,7 @@ export default function InputPlayer(
             type="text"
             onValueChange={setValue}
             label={props.label}
+            isInvalid={meta.touched && meta.error ? true : false}
             errorMessage={meta.touched && meta.error ? meta.error : undefined}
         />
     );

@@ -33,6 +33,7 @@ export default function SelectPlayer(
             selectionMode="single"
             className="max-w-lg"
             selectedKeys={[meta.value]}
+            isInvalid={meta.touched && meta.error ? true : false}
             errorMessage={meta.touched && meta.error ? meta.error : undefined}
         >
             {playerCountOptions.map((item: PlayerCountType) => {

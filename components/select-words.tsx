@@ -39,6 +39,7 @@ export default function SelectWords(
             disabledKeys={[""]}
             selectedKeys={[meta.value]}
             // onChange={handleSelectionChange}
+            isInvalid={meta.touched && meta.error ? true : false}
             errorMessage={meta.touched && meta.error ? meta.error : undefined}
         >
             {wordLists.map((wordList) => {

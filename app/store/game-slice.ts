@@ -15,12 +15,14 @@ export interface GameSlice {
     players: Player[];
     currentRound: number;
     currentWord: string;
+    selectedImposter: string;
     setNumberOfPlayers: (numberOfPlayers: string) => void;
     setWordList: (value: string) => void;
     setWordCollection: (value: string[]) => void;
     setPlayers: (players: string[]) => void;
     setNextPlayersTurn: () => void;
     setRandomImposter: () => void;
+    setSelectedImposter: (name: string) => void;
     setRandomWord: () => void;
     endRound: () => void;
     // code: string;
@@ -39,6 +41,7 @@ export const createGameSlice: StateCreator<GameSlice> = (set) => ({
     players: [],
     currentRound: 0,
     currentWord: "",
+    selectedImposter: "",
     setNumberOfPlayers: (numberOfPlayers: string) =>
         set(() => ({ numberOfPlayers: Number(numberOfPlayers) })),
     setWordList: (wordList: string) => set(() => ({ wordList })),
@@ -72,6 +75,8 @@ export const createGameSlice: StateCreator<GameSlice> = (set) => ({
 
             return { ...state };
         }),
+    setSelectedImposter: (name: string) =>
+        set(() => ({ selectedImposter: name })),
     setRandomWord: () =>
         set((state) => {
             const wordIndex = Math.floor(
@@ -87,6 +92,7 @@ export const createGameSlice: StateCreator<GameSlice> = (set) => ({
                 (word) => word !== state.currentWord
             ),
             currentWord: "",
+            selectedImposter: "",
         })),
     // code: "",
     // currentWord: "",

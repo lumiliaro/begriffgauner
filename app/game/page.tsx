@@ -50,7 +50,6 @@ export default function GamePage() {
                     setNextPlayersTurn();
                     helpers.setSubmitting(false);
                 } else {
-                    endRound();
                     router.push("round-end");
                 }
             }}

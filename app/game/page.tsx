@@ -2,93 +2,94 @@
 
 import { title } from "@/components/primitives";
 import { Button } from "@nextui-org/button";
-import { useBoundStore } from "../store/store";
-import { useCallback, useEffect, useState } from "react";
 import { Chip } from "@nextui-org/chip";
-import { useRouter } from "next/navigation";
-import { useDisclosure } from "@nextui-org/modal";
 import ModalShowWord from "@/components/modal-show-word";
+import { Form, Formik } from "formik";
+import { GameSchema } from "../utils/schemas";
+import { useBoundStore } from "../store/store";
+import { useDisclosure } from "@nextui-org/modal";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function GamePage() {
-    const playerCount = useBoundStore((state) => state.playerCount);
+    const currentRound = useBoundStore((state) => state.currentRound);
+    const maxRoundNumber = useBoundStore((state) => state.numberOfPlayers);
     const currentWord = useBoundStore((state) => state.currentWord);
-    const currentPlayerIndex = useBoundStore(
-        (state) => state.currentPlayerIndex
-    );
     const players = useBoundStore((state) => state.players);
     const setNextPlayersTurn = useBoundStore(
         (state) => state.setNextPlayersTurn
     );
-    const shufflePlayers = useBoundStore((state) => state.shufflePlayers);
-    const setRandomWord = useBoundStore((state) => state.setRandomWord);
     const setRandomImposter = useBoundStore((state) => state.setRandomImposter);
-    const resetImposter = useBoundStore((state) => state.resetImposter);
-    const [loading, setLoading] = useState<boolean>(false);
-    const router = useRouter();
-    const [wordViewed, setWordViewed] = useState<boolean>(false);
+    const setRandomWord = useBoundStore((state) => state.setRandomWord);
+    const endRound = useBoundStore((state) => state.endRound);
 
+    const [wordViewed, setWordViewed] = useState<boolean>(false);
     const { isOpen, onOpen, onOpenChange } = useDisclosure({
         defaultOpen: false,
-        onOpen: () => setWordViewed(true),
+        onClose: () => setWordViewed(true),
     });
+    const router = useRouter();
+
+    const playerName = players[currentRound] ? players[currentRound].name : "";
+    const isPlayerImposter = players[currentRound]
+        ? players[currentRound].imposter
+        : false;
 
     useEffect(() => {
-        if (!players[currentPlayerIndex]) {
-            router.push("/play");
-        }
-    }, [players, router, currentPlayerIndex]);
-
-    useEffect(() => {
-        // Initial Loading
-        shufflePlayers();
-        resetImposter();
         setRandomImposter();
-    }, [shufflePlayers, setRandomImposter, resetImposter]);
-
-    useEffect(() => {
-        if (currentWord === "") {
-            setRandomWord();
-        }
-    }, [currentWord, setRandomWord]);
-
-    const handleNextPlayerTurnClick = useCallback(() => {
-        if (currentPlayerIndex !== playerCount - 1) {
-            setWordViewed(false);
-            setNextPlayersTurn();
-        } else router.push("round-end");
-    }, [currentPlayerIndex, playerCount, setNextPlayersTurn, router]);
-
-    if (!players[currentPlayerIndex]) {
-        return <></>;
-    }
+        setRandomWord();
+    }, [setRandomImposter, setRandomWord]);
 
     return (
-        <div className="flex w-full max-w-lg flex-col gap-4">
-            <h1 className={title()}>
-                It is player {players[currentPlayerIndex].name ?? ""}
-                &apos;s turn
-            </h1>
-            <Button color="primary" onPress={onOpen} isLoading={loading}>
-                View word
-            </Button>
-            <ModalShowWord
-                isOpen={isOpen}
-                word={!players[currentPlayerIndex].imposter ? currentWord : ""}
-                onOpenChange={onOpenChange}
-            />
-            <Button
-                color="danger"
-                onPress={handleNextPlayerTurnClick}
-                isLoading={loading}
-                isDisabled={!wordViewed}
-            >
-                Next player
-            </Button>
-            <div className="text-center">
-                <Chip>
-                    Spieler {currentPlayerIndex + 1} / {playerCount}
-                </Chip>
-            </div>
-        </div>
+        <Formik
+            initialValues={{}}
+            validationSchema={GameSchema}
+            onSubmit={(values, helpers) => {
+                if (currentRound !== maxRoundNumber - 1) {
+                    setWordViewed(false);
+                    setNextPlayersTurn();
+                    helpers.setSubmitting(false);
+                } else {
+                    router.push("round-end");
+                }
+            }}
+        >
+            {(formik) => (
+                <Form className="flex w-full max-w-xs flex-col gap-4">
+                    <h1 className={title()}>
+                        It is player {playerName}
+                        &apos;s turn
+                    </h1>
+                    <Button
+                        color="primary"
+                        onPress={onOpen}
+                        disabled={formik.isSubmitting}
+                        isLoading={formik.isSubmitting}
+                    >
+                        View word
+                    </Button>
+                    <ModalShowWord
+                        isOpen={isOpen}
+                        word={isPlayerImposter ? "" : currentWord}
+                        onOpenChange={onOpenChange}
+                    />
+                    <Button
+                        color="danger"
+                        type="submit"
+                        isLoading={formik.isSubmitting}
+                        isDisabled={!wordViewed}
+                    >
+                        {currentRound + 1 !== maxRoundNumber
+                            ? "Next player"
+                            : "End game"}
+                    </Button>
+                    <div className="text-center">
+                        <Chip>
+                            Spieler {currentRound + 1} / {maxRoundNumber}
+                        </Chip>
+                    </div>
+                </Form>
+            )}
+        </Formik>
     );
 }

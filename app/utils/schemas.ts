@@ -14,3 +14,7 @@ export const PlayerInputSchema = Yup.object().shape({
 });
 
 export type PlayerInputFormType = Yup.InferType<typeof PlayerInputSchema>;
+
+export const GameSchema = Yup.object().shape({});
+
+export type GameFormType = Yup.InferType<typeof GameSchema>;

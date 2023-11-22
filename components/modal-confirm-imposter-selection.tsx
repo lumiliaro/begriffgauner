@@ -9,6 +9,7 @@ import {
     ModalFooter,
     ModalHeader,
 } from "@nextui-org/modal";
+import { useBoundStore } from "@/app/store/store";
 
 interface ModalShowWordProps {
     playerName: string;
@@ -21,6 +22,10 @@ export default function ModalConfirmImposterSelection({
     isOpen,
     onOpenChange,
 }: ModalShowWordProps): ReactElement {
+    const setSelectedImposter = useBoundStore(
+        (state) => state.setSelectedImposter
+    );
+
     return (
         <Modal
             isOpen={isOpen}
@@ -35,7 +40,7 @@ export default function ModalConfirmImposterSelection({
                         </ModalHeader>
                         <ModalBody>
                             <p>
-                                Do you really want to select player {playerName}{" "}
+                                Do you really want to select player {playerName}
                                 as the imposter?
                             </p>
                         </ModalBody>
@@ -43,7 +48,10 @@ export default function ModalConfirmImposterSelection({
                             <Button
                                 color="danger"
                                 variant="light"
-                                onPress={onClose}
+                                onPress={() => {
+                                    setSelectedImposter(playerName);
+                                    onClose();
+                                }}
                             >
                                 Confirm
                             </Button>

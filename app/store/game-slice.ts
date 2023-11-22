@@ -11,10 +11,18 @@ export interface Player {
 export interface GameSlice {
     numberOfPlayers: number;
     wordList: string;
+    wordCollection: string[];
     players: Player[];
+    currentRound: number;
+    currentWord: string;
     setNumberOfPlayers: (numberOfPlayers: string) => void;
     setWordList: (value: string) => void;
+    setWordCollection: (value: string[]) => void;
     setPlayers: (players: string[]) => void;
+    setNextPlayersTurn: () => void;
+    setRandomImposter: () => void;
+    setRandomWord: () => void;
+    endRound: () => void;
     // code: string;
     // currentWord: string;
     // currentPlayerIndex: number;
@@ -27,19 +35,58 @@ export interface GameSlice {
 export const createGameSlice: StateCreator<GameSlice> = (set) => ({
     numberOfPlayers: 3,
     wordList: "german20",
+    wordCollection: [],
     players: [],
+    currentRound: 0,
+    currentWord: "",
     setNumberOfPlayers: (numberOfPlayers: string) =>
         set(() => ({ numberOfPlayers: Number(numberOfPlayers) })),
     setWordList: (wordList: string) => set(() => ({ wordList })),
+    setWordCollection: (wordCollection: string[]) =>
+        set(() => ({ wordCollection })),
     setPlayers: (players: string[]) =>
         set(() => ({
-            players: players.map((player) => ({
+            players: players.map((player, index) => ({
                 name: player,
-                onTurn: false,
+                onTurn: index === 0,
                 imposter: false,
                 imposterWins: 0,
                 teamWins: 0,
             })),
+        })),
+    setNextPlayersTurn: () =>
+        set((state) => ({
+            currentRound:
+                state.currentRound === state.numberOfPlayers - 1
+                    ? 0
+                    : state.currentRound + 1,
+        })),
+    setRandomImposter: () =>
+        set((state) => {
+            const imposterIndex = Math.floor(
+                Math.random() * state.numberOfPlayers
+            );
+            state.players.map((player, index) => {
+                player["imposter"] = index === imposterIndex;
+            });
+
+            return { ...state };
+        }),
+    setRandomWord: () =>
+        set((state) => {
+            const wordIndex = Math.floor(
+                Math.random() * state.wordCollection.length
+            );
+            state.currentWord = state.wordCollection[wordIndex];
+            return { ...state };
+        }),
+    endRound: () =>
+        set((state) => ({
+            currentRound: 0,
+            wordCollection: state.wordCollection.filter(
+                (word) => word !== state.currentWord
+            ),
+            currentWord: "",
         })),
     // code: "",
     // currentWord: "",

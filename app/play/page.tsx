@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { PlaySchema } from "../utils/schemas";
 import { Form, Formik } from "formik";
 import SelectWords from "@/components/select-words";
+import { wordLists } from "../utils/wordlists";
 
 export default function PlayPage() {
     const numberOfPlayers = useBoundStore((state) => state.numberOfPlayers);
@@ -15,6 +16,7 @@ export default function PlayPage() {
         (state) => state.setNumberOfPlayers
     );
     const setWordList = useBoundStore((state) => state.setWordList);
+    const setWordCollection = useBoundStore((state) => state.setWordCollection);
     const wordList = useBoundStore((state) => state.wordList);
     const router = useRouter();
 
@@ -22,13 +24,18 @@ export default function PlayPage() {
         <Formik
             initialValues={{
                 numberOfPlayers: numberOfPlayers.toString(),
-                wordList: wordList,
+                wordList,
             }}
             validationSchema={PlaySchema}
             onSubmit={(values, helpers) => {
                 // same shape as initial values
                 setNumberOfPlayers(values.numberOfPlayers);
                 setWordList(values.wordList);
+                setWordCollection(
+                    wordLists.filter(
+                        (wordList) => wordList.value === values.wordList
+                    )[0].words
+                );
                 helpers.setSubmitting(false);
                 router.push("player-input");
             }}

@@ -9,10 +9,6 @@ import { useDisclosure } from "@nextui-org/modal";
 import ModalConfirmImposterSelection from "@/components/modal-confirm-imposter-selection";
 import TableScore from "@/components/table-score";
 
-function randomInRange(min: number, max: number) {
-    return Math.random() * (max - min) + min;
-}
-
 export default function RoundEndPage() {
     const players = useBoundStore((state) => state.players);
     const endRound = useBoundStore((state) => state.endRound);

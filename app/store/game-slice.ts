@@ -6,6 +6,7 @@ export interface Player {
     imposter: boolean;
     imposterWins: number;
     teamWins: number;
+    score: number;
 }
 
 export interface GameSlice {
@@ -25,6 +26,7 @@ export interface GameSlice {
     setSelectedImposter: (name: string) => void;
     setRandomWord: () => void;
     endRound: () => void;
+    setScores: (isImposterFound: boolean) => void;
 }
 
 export const createGameSlice: StateCreator<GameSlice> = (set) => ({
@@ -48,6 +50,7 @@ export const createGameSlice: StateCreator<GameSlice> = (set) => ({
                 imposter: false,
                 imposterWins: 0,
                 teamWins: 0,
+                score: 0,
             })),
         })),
     setNextPlayersTurn: () =>
@@ -86,5 +89,30 @@ export const createGameSlice: StateCreator<GameSlice> = (set) => ({
             ),
             currentWord: "",
             selectedImposter: "",
+        })),
+    setScores: (isImposterFound: boolean) =>
+        set((state) => ({
+            players: state.players.map((player) => {
+                if (player.imposter) {
+                    return {
+                        ...player,
+                        imposterWins:
+                            player.name !== state.selectedImposter
+                                ? player.imposterWins + 1
+                                : player.imposterWins,
+                        score:
+                            player.name !== state.selectedImposter
+                                ? player.score + 20
+                                : player.score,
+                    };
+                }
+                return {
+                    ...player,
+                    teamWins: isImposterFound
+                        ? player.teamWins + 1
+                        : player.teamWins,
+                    score: isImposterFound ? player.score + 10 : player.score,
+                };
+            }),
         })),
 });

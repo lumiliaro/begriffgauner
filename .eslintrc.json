@@ -5,5 +5,18 @@
         "unused-imports/no-unused-imports": "warn",
         "react/no-unescaped-entities": "off"
     },
-    "plugins": ["unused-imports"]
+    "plugins": ["unused-imports"],
+    "overrides": [
+        {
+            "files": ["*.ts", "*.tsx"],
+            "extends": [
+                "plugin:@typescript-eslint/recommended",
+                "plugin:@typescript-eslint/recommended-requiring-type-checking"
+            ],
+
+            "parserOptions": {
+                "project": ["./tsconfig.json"]
+            }
+        }
+    ]
 }

@@ -14,9 +14,10 @@ export default function PlayerInputPage() {
     const setPlayers = useBoundStore((state) => state.setPlayers);
     const router = useRouter();
 
-    let players = playersState.map((player) => player.name);
+    let players: string[] = playersState.map((player) => player.name);
 
     if (players.length !== numberOfPlayers) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         players = Array(numberOfPlayers).fill("");
     }
 

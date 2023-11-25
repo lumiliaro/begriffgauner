@@ -7,14 +7,12 @@ import { ReactElement } from "react";
 export default function InputPlayer(
     props: { label: string } & FieldHookConfig<string>
 ): ReactElement {
-    const [field, meta, helpers] = useField(props);
-    const { setValue } = helpers;
+    const [field, meta] = useField(props);
 
     return (
         <Input
             {...field}
             type="text"
-            onValueChange={setValue}
             label={props.label}
             isInvalid={meta.touched && meta.error ? true : false}
             errorMessage={meta.touched && meta.error ? meta.error : undefined}

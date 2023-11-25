@@ -25,13 +25,6 @@ export interface GameSlice {
     setSelectedImposter: (name: string) => void;
     setRandomWord: () => void;
     endRound: () => void;
-    // code: string;
-    // currentWord: string;
-    // currentPlayerIndex: number;
-    // setCode: (value: string) => void;
-    // setCurrentWord: (word: string) => void;
-    // setNextPlayersTurn: () => void;
-    // newRound: () => void;
 }
 
 export const createGameSlice: StateCreator<GameSlice> = (set) => ({
@@ -94,17 +87,4 @@ export const createGameSlice: StateCreator<GameSlice> = (set) => ({
             currentWord: "",
             selectedImposter: "",
         })),
-    // code: "",
-    // currentWord: "",
-    // currentPlayerIndex: 0,
-    // setCode: (code: string) => set(() => ({ code })),
-    // setCurrentWord: (word: string) => set(() => ({ currentWord: word })),
-    // setNextPlayersTurn: () =>
-    //     set((state) => ({
-    //         currentPlayerIndex:
-    //             state.currentPlayerIndex === state.numberOfPlayers - 1
-    //                 ? 0
-    //                 : state.currentPlayerIndex + 1,
-    //     })),
-    // newRound: () => set(() => ({ currentWord: "", currentPlayerIndex: 0 })),
 });

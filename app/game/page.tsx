@@ -21,7 +21,7 @@ export default function GamePage() {
     );
     const setRandomImposter = useBoundStore((state) => state.setRandomImposter);
     const setRandomWord = useBoundStore((state) => state.setRandomWord);
-    const endRound = useBoundStore((state) => state.endRound);
+    // const endRound = useBoundStore((state) => state.endRound);
 
     const [wordViewed, setWordViewed] = useState<boolean>(false);
     const { isOpen, onOpen, onOpenChange } = useDisclosure({

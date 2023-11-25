@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useDisclosure } from "@nextui-org/modal";
 import ModalConfirmImposterSelection from "@/components/modal-confirm-imposter-selection";
+import TableScore from "@/components/table-score";
 
 function randomInRange(min: number, max: number) {
     return Math.random() * (max - min) + min;
@@ -15,13 +16,16 @@ function randomInRange(min: number, max: number) {
 export default function RoundEndPage() {
     const players = useBoundStore((state) => state.players);
     const endRound = useBoundStore((state) => state.endRound);
+    const setScores = useBoundStore((state) => state.setScores);
     const selectedImposter = useBoundStore((state) => state.selectedImposter);
     const wordCollection = useBoundStore((state) => state.wordCollection);
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedPlayer, setSelectedPlayer] = useState<number>(-1);
     const [isImposterFound, setIsImposterFound] = useState<boolean>();
-
+    const selectefPlayerName = players[selectedPlayer]
+        ? players[selectedPlayer].name
+        : "";
     const { isOpen, onOpen, onOpenChange } = useDisclosure({
         defaultOpen: false,
     });
@@ -38,19 +42,15 @@ export default function RoundEndPage() {
         }
     }, [selectedImposter, router, endRound, wordCollection.length]);
 
-    const selectefPlayerName = players[selectedPlayer]
-        ? players[selectedPlayer].name
-        : "";
-
     useEffect(() => {
         if (selectedImposter !== "") {
             const isImposterFound = players.filter(
                 (player) => player.name === selectedImposter && player.imposter
             );
-
             setIsImposterFound(isImposterFound.length > 0);
+            setScores(isImposterFound.length > 0);
         }
-    }, [selectedImposter, players]);
+    }, [selectedImposter]);
 
     return (
         <div className="flex w-full max-w-md flex-col gap-4">
@@ -89,6 +89,7 @@ export default function RoundEndPage() {
                     </p>
                 </>
             )}
+            <TableScore />
         </div>
     );
 }

@@ -10,13 +10,20 @@ import InputPlayer from "@/components/input-player";
 
 export default function PlayerInputPage() {
     const numberOfPlayers = useBoundStore((state) => state.numberOfPlayers);
+    const playersState = useBoundStore((state) => state.players);
     const setPlayers = useBoundStore((state) => state.setPlayers);
     const router = useRouter();
+
+    let players = playersState.map((player) => player.name);
+
+    if (players.length !== numberOfPlayers) {
+        players = Array(numberOfPlayers).fill("");
+    }
 
     return (
         <Formik
             initialValues={{
-                players: Array(numberOfPlayers).fill(""),
+                players,
             }}
             validationSchema={PlayerInputSchema}
             onSubmit={(values, helpers) => {

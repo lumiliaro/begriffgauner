@@ -1,59 +1,66 @@
-import { Link } from "@nextui-org/link";
-import { Snippet } from "@nextui-org/snippet";
-import { Code } from "@nextui-org/code";
+"use client";
+
+import { title } from "@/components/primitives";
+import SelectPlayer from "@/components/select-player";
+import { Button } from "@nextui-org/button";
+import { useRouter } from "next/navigation";
+import { Form, Formik } from "formik";
+import SelectWords from "@/components/select-words";
 import { button as buttonStyles } from "@nextui-org/theme";
-import { siteConfig } from "@/config/site";
-import { title, subtitle } from "@/components/primitives";
-import { GithubIcon } from "@/components/icons";
+import { useBoundStore } from "./store/store";
+import { PlaySchema } from "./utils/schemas";
+import { wordLists } from "./utils/wordlists";
 
-export default function Home() {
+export default function PlayPage() {
+    const numberOfPlayers = useBoundStore((state) => state.numberOfPlayers);
+    const setNumberOfPlayers = useBoundStore(
+        (state) => state.setNumberOfPlayers
+    );
+    const setWordList = useBoundStore((state) => state.setWordList);
+    const setWordCollection = useBoundStore((state) => state.setWordCollection);
+    const wordList = useBoundStore((state) => state.wordList);
+    const router = useRouter();
+
     return (
-        <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-            <div className="inline-block max-w-lg text-center justify-center">
-                <h1 className={title()}>Make&nbsp;</h1>
-                <h1 className={title({ color: "violet" })}>beautiful&nbsp;</h1>
-                <br />
-                <h1 className={title()}>
-                    websites regardless of your design experience.
-                </h1>
-                <h2 className={subtitle({ class: "mt-4" })}>
-                    Beautiful, fast and modern React UI library.
-                </h2>
-            </div>
-
-            <div className="flex gap-3">
-                <Link
-                    isExternal
-                    href={siteConfig.links.docs}
-                    className={buttonStyles({
-                        color: "primary",
-                        radius: "full",
-                        variant: "shadow",
-                    })}
-                >
-                    Documentation
-                </Link>
-                <Link
-                    isExternal
-                    className={buttonStyles({
-                        variant: "bordered",
-                        radius: "full",
-                    })}
-                    href={siteConfig.links.github}
-                >
-                    <GithubIcon size={20} />
-                    GitHub
-                </Link>
-            </div>
-
-            <div className="mt-8">
-                <Snippet hideSymbol hideCopyButton variant="flat">
-                    <span>
-                        Get started by editing{" "}
-                        <Code color="primary">app/page.tsx</Code>
-                    </span>
-                </Snippet>
-            </div>
-        </section>
+        <Formik
+            initialValues={{
+                numberOfPlayers: numberOfPlayers.toString(),
+                wordList,
+            }}
+            validationSchema={PlaySchema}
+            onSubmit={(values, helpers) => {
+                // same shape as initial values
+                setNumberOfPlayers(values.numberOfPlayers);
+                setWordList(values.wordList);
+                setWordCollection(
+                    wordLists.filter(
+                        (wordList) => wordList.value === values.wordList
+                    )[0].words
+                );
+                helpers.setSubmitting(false);
+                router.push("player-input");
+            }}
+        >
+            {(formik) => (
+                <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+                    <Form className="flex w-full max-w-xs flex-col gap-4">
+                        <h1 className={title()}>Game Settings</h1>
+                        <SelectPlayer name="numberOfPlayers" />
+                        <SelectWords name="wordList" />
+                        <Button
+                            className={buttonStyles({
+                                color: "success",
+                                radius: "full",
+                                variant: "shadow",
+                            })}
+                            type="submit"
+                            isLoading={formik.isSubmitting}
+                        >
+                            Play
+                        </Button>
+                    </Form>
+                </section>
+            )}
+        </Formik>
     );
 }

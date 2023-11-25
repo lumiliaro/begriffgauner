@@ -9,6 +9,7 @@ import { PlaySchema } from "../utils/schemas";
 import { Form, Formik } from "formik";
 import SelectWords from "@/components/select-words";
 import { wordLists } from "../utils/wordlists";
+import { button as buttonStyles } from "@nextui-org/theme";
 
 export default function PlayPage() {
     const numberOfPlayers = useBoundStore((state) => state.numberOfPlayers);
@@ -46,8 +47,12 @@ export default function PlayPage() {
                     <SelectPlayer name="numberOfPlayers" />
                     <SelectWords name="wordList" />
                     <Button
+                        className={buttonStyles({
+                            color: "success",
+                            radius: "full",
+                            variant: "shadow",
+                        })}
                         type="submit"
-                        color="success"
                         isLoading={formik.isSubmitting}
                     >
                         Play

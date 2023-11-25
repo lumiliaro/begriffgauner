@@ -40,14 +40,14 @@ export default function ModalConfirmImposterSelection({
                         </ModalHeader>
                         <ModalBody>
                             <p>
-                                Do you really want to select player {playerName}
+                                Do you really want to select player{" "}
+                                <span className="font-bold">{playerName}</span>{" "}
                                 as the imposter?
                             </p>
                         </ModalBody>
                         <ModalFooter>
                             <Button
                                 color="danger"
-                                variant="light"
                                 onPress={() => {
                                     setSelectedImposter(playerName);
                                     onClose();
@@ -55,11 +55,7 @@ export default function ModalConfirmImposterSelection({
                             >
                                 Confirm
                             </Button>
-                            <Button
-                                color="danger"
-                                variant="light"
-                                onPress={onClose}
-                            >
+                            <Button color="default" onPress={onClose}>
                                 Close
                             </Button>
                         </ModalFooter>

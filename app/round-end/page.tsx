@@ -16,6 +16,7 @@ export default function RoundEndPage() {
     const players = useBoundStore((state) => state.players);
     const endRound = useBoundStore((state) => state.endRound);
     const selectedImposter = useBoundStore((state) => state.selectedImposter);
+    const wordCollection = useBoundStore((state) => state.wordCollection);
     const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedPlayer, setSelectedPlayer] = useState<number>(-1);
@@ -26,14 +27,16 @@ export default function RoundEndPage() {
     });
 
     const handleNewRoundClick = useCallback(() => {
+        if (wordCollection.length === 0) {
+            router.push("/");
+            return;
+        }
         if (selectedImposter !== "") {
             setLoading(true);
             endRound();
             router.push("game");
-        } else {
-            alert("Please select an imposter");
         }
-    }, [selectedImposter, router, endRound]);
+    }, [selectedImposter, router, endRound, wordCollection.length]);
 
     const selectefPlayerName = players[selectedPlayer]
         ? players[selectedPlayer].name
@@ -69,22 +72,23 @@ export default function RoundEndPage() {
                 playerName={selectefPlayerName}
                 onOpenChange={onOpenChange}
             />
-            <Button
-                color="success"
-                onPress={handleNewRoundClick}
-                isLoading={loading}
-                isDisabled={selectedImposter === ""}
-            >
-                New round
-            </Button>
-
-            <p className="text-2xl">
-                {selectedImposter !== ""
-                    ? `The player ${selectedImposter} was ${
-                          isImposterFound ? "" : "not"
-                      } the imposter`
-                    : null}
-            </p>
+            {selectedImposter !== "" && (
+                <>
+                    <Button
+                        color="success"
+                        onPress={handleNewRoundClick}
+                        isLoading={loading}
+                        isDisabled={selectedImposter === ""}
+                    >
+                        New round
+                    </Button>
+                    <p className="text-2xl text-center">
+                        The player{" "}
+                        <span className="font-bold">{selectedImposter}</span>{" "}
+                        was {isImposterFound ? "" : "not"} the imposter
+                    </p>
+                </>
+            )}
         </div>
     );
 }

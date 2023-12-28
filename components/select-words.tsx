@@ -1,6 +1,6 @@
 "use client";
 
-import { wordLists } from "@/app/utils/wordlists";
+import { wordLists } from "@/config/wordlists";
 import { Select, SelectItem } from "@nextui-org/select";
 import { FieldHookConfig, useField } from "formik";
 import { ReactElement } from "react";

@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { PlaySchema } from "../utils/schemas";
 import { Form, Formik } from "formik";
 import SelectWords from "@/components/select-words";
-import { wordLists } from "../utils/wordlists";
+import { wordLists } from "../../config/wordlists";
 import { button as buttonStyles } from "@nextui-org/theme";
 
 export default function PlayPage() {

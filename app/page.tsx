@@ -9,7 +9,7 @@ import SelectWords from "@/components/select-words";
 import { button as buttonStyles } from "@nextui-org/theme";
 import { useBoundStore } from "./store/store";
 import { PlaySchema } from "./utils/schemas";
-import { wordLists } from "./utils/wordlists";
+import { wordLists } from "../config/wordlists";
 
 export default function PlayPage() {
     const numberOfPlayers = useBoundStore((state) => state.numberOfPlayers);

@@ -41,55 +41,56 @@ export default function GamePage() {
     }, [setRandomImposter, setRandomWord]);
 
     return (
-        <Formik
-            initialValues={{}}
-            validationSchema={GameSchema}
-            onSubmit={(values, helpers) => {
-                if (currentRound !== maxRoundNumber - 1) {
-                    setWordViewed(false);
-                    setNextPlayersTurn();
-                    helpers.setSubmitting(false);
-                } else {
-                    router.push("round-end");
-                }
-            }}
-        >
-            {(formik) => (
-                <Form className="flex w-full max-w-xs flex-col gap-4">
-                    <h1 className={title()}>
-                        It is player {playerName}
-                        &apos;s turn
-                    </h1>
-                    <Button
-                        color="primary"
-                        onPress={onOpen}
-                        disabled={formik.isSubmitting}
-                        isLoading={formik.isSubmitting}
-                    >
-                        View word
-                    </Button>
-                    <ModalShowWord
-                        isOpen={isOpen}
-                        word={isPlayerImposter ? "" : currentWord}
-                        onOpenChange={onOpenChange}
-                    />
-                    <Button
-                        color="danger"
-                        type="submit"
-                        isLoading={formik.isSubmitting}
-                        isDisabled={!wordViewed}
-                    >
-                        {currentRound + 1 !== maxRoundNumber
-                            ? "Next player"
-                            : "End game"}
-                    </Button>
-                    <div className="text-center">
-                        <Chip>
-                            Spieler {currentRound + 1} / {maxRoundNumber}
-                        </Chip>
-                    </div>
-                </Form>
-            )}
-        </Formik>
+        <>
+            <h1 className={title()}>
+                <span className="underline">{playerName}</span> on turn
+            </h1>
+            <Formik
+                initialValues={{}}
+                validationSchema={GameSchema}
+                onSubmit={(_, helpers) => {
+                    if (currentRound !== maxRoundNumber - 1) {
+                        setWordViewed(false);
+                        setNextPlayersTurn();
+                        helpers.setSubmitting(false);
+                    } else {
+                        router.push("round-end");
+                    }
+                }}
+            >
+                {(formik) => (
+                    <Form className="flex w-full max-w-xs flex-col gap-4">
+                        <Button
+                            color="primary"
+                            onPress={onOpen}
+                            disabled={formik.isSubmitting}
+                            isLoading={formik.isSubmitting}
+                        >
+                            View word
+                        </Button>
+                        <ModalShowWord
+                            isOpen={isOpen}
+                            word={isPlayerImposter ? "" : currentWord}
+                            onOpenChange={onOpenChange}
+                        />
+                        <Button
+                            color="danger"
+                            type="submit"
+                            isLoading={formik.isSubmitting}
+                            isDisabled={!wordViewed}
+                        >
+                            {currentRound + 1 !== maxRoundNumber
+                                ? "Next player"
+                                : "End game"}
+                        </Button>
+                        <div className="text-center">
+                            <Chip>
+                                Spieler {currentRound + 1} / {maxRoundNumber}
+                            </Chip>
+                        </div>
+                    </Form>
+                )}
+            </Formik>
+        </>
     );
 }

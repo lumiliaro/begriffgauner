@@ -1,6 +1,5 @@
 "use client";
 
-import { title } from "@/components/primitives";
 import { Button } from "@nextui-org/button";
 import { useBoundStore } from "../store/store";
 import { useRouter } from "next/navigation";
@@ -35,7 +34,6 @@ export default function PlayerInputPage() {
         >
             {(formik) => (
                 <Form className="flex w-full max-w-xs flex-col gap-4">
-                    <h1 className={title()}>Enter player names</h1>
                     <FieldArray
                         name="players"
                         render={() => (

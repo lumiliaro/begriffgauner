@@ -1,6 +1,5 @@
 "use client";
 
-import { title } from "@/components/primitives";
 import { Button } from "@nextui-org/button";
 import { useBoundStore } from "../store/store";
 import { useRouter } from "next/navigation";
@@ -50,7 +49,6 @@ export default function RoundEndPage() {
 
     return (
         <div className="flex w-full max-w-md flex-col gap-4">
-            <h1 className={title()}>Select the imposter</h1>
             {players.map((player, index) => (
                 <Button
                     key={index}

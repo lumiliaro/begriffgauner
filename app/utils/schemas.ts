@@ -10,7 +10,9 @@ export const PlaySchema = Yup.object().shape({
 export type PlayFormType = Yup.InferType<typeof PlaySchema>;
 
 export const PlayerInputSchema = Yup.object().shape({
-    players: Yup.array(Yup.string().required()).required(),
+    players: Yup.array(
+        Yup.string().required("Playername is required")
+    ).required(),
 });
 
 export type PlayerInputFormType = Yup.InferType<typeof PlayerInputSchema>;

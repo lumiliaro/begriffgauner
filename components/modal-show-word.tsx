@@ -26,6 +26,7 @@ export default function ModalShowWord({
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             isDismissable={false}
+            placement="center"
         >
             <ModalContent>
                 {(onClose) => (

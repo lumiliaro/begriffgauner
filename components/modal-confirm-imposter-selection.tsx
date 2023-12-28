@@ -31,6 +31,7 @@ export default function ModalConfirmImposterSelection({
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             isDismissable={false}
+            placement="center"
         >
             <ModalContent>
                 {(onClose) => (

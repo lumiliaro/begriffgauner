@@ -5,15 +5,11 @@ import {
     NavbarMenuToggle,
     NavbarBrand,
     NavbarItem,
-    NavbarMenuItem,
 } from "@nextui-org/navbar";
 import { Link } from "@nextui-org/link";
 
-import { link as linkStyles } from "@nextui-org/theme";
-
 import { siteConfig } from "@/config/site";
 import NextLink from "next/link";
-import clsx from "clsx";
 
 import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon } from "@/components/icons";
@@ -54,7 +50,7 @@ export const Navbar = () => {
                         <p className="font-bold text-inherit">Begriffgauner</p>
                     </NextLink>
                 </NavbarBrand>
-                <ul className="hidden lg:flex gap-4 justify-start ml-2">
+                {/* <ul className="hidden lg:flex gap-4 justify-start ml-2">
                     {siteConfig.navItems.map((item) => (
                         <NavbarItem key={item.href}>
                             <NextLink
@@ -69,7 +65,7 @@ export const Navbar = () => {
                             </NextLink>
                         </NavbarItem>
                     ))}
-                </ul>
+                </ul> */}
             </NavbarContent>
 
             <NavbarContent
@@ -103,13 +99,13 @@ export const Navbar = () => {
             <NavbarMenu>
                 {/* {searchInput} */}
                 <div className="mx-4 mt-2 flex flex-col gap-2">
-                    {siteConfig.navMenuItems.map((item, index) => (
+                    {/* {siteConfig.navMenuItems.map((item, index) => (
                         <NavbarMenuItem key={index}>
                             <Link color={"foreground"} href="#" size="lg">
                                 {item.label}
                             </Link>
                         </NavbarMenuItem>
-                    ))}
+                    ))} */}
                 </div>
             </NavbarMenu>
         </NextUINavbar>

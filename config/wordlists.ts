@@ -605,4 +605,5 @@ export const wordLists: WordList[] = [
     animals100,
     historyPersonalities,
     celebreties,
+    lolChampions,
 ];
